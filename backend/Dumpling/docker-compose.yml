@@ -1,0 +1,18 @@
+version: "3.1"
+
+services:
+  database:
+    image: postgres:16.1
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: Heslo1234.
+      POSTGRES_USER: web
+      POSTGRES_DB: dumplingDb
+    volumes:
+      - dumpling_database:/var/lib/postgresql/data
+    ports:
+      - 2345:5432
+
+volumes:
+  dumpling_database:
+    driver: local

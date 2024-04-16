@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dumpling", "Dumpling\Dumpling.csproj", "{3FE68F47-F43A-495C-BB62-8185F1F1BE64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dumpling.Api", "Dumpling.Api\Dumpling.Api.csproj", "{7629FB29-C205-4B35-9C3D-32F8B4F2DA60}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3FE68F47-F43A-495C-BB62-8185F1F1BE64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FE68F47-F43A-495C-BB62-8185F1F1BE64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FE68F47-F43A-495C-BB62-8185F1F1BE64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FE68F47-F43A-495C-BB62-8185F1F1BE64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7629FB29-C205-4B35-9C3D-32F8B4F2DA60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7629FB29-C205-4B35-9C3D-32F8B4F2DA60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7629FB29-C205-4B35-9C3D-32F8B4F2DA60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7629FB29-C205-4B35-9C3D-32F8B4F2DA60}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
