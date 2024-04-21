@@ -8,4 +8,7 @@ public class Word
     public string Value { get; set; }
     public string Meaning { get; set; }
     public string Pronunciation { get; set; }
+    
+    public string LessonId { get; set; }
+    public virtual Lesson Lesson { get; set; }
 }

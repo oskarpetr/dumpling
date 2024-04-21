@@ -28,8 +28,8 @@ public class LessonController : Controller
     [HttpGet(Api.LessonScheme.LESSONS)]
     public IActionResult Lessons()
     {
+        // var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
         var authorizationToken = "b332aee7-c1b5-4454-b489-21f342ff611d";
-        // HttpContext.Request.Headers["Authorization"]
         
         var userLessons = _database.UserLessons.Where(x => x.UserId == authorizationToken).ToList();
         List<Lesson> lessons = new();
@@ -44,8 +44,7 @@ public class LessonController : Controller
 
         foreach (var lesson in lessons)
         {
-            var lessonWords = _database.LessonWords.Include(x => x.Word).Where(x => x.LessonId == lesson.LessonId).ToList();
-            var words = lessonWords.Select(x => x.Word).ToList();
+            var words = _database.Words.Where(x => x.LessonId == lesson.LessonId).ToList();
             
             lessonModels.Add(new LessonModel()
             {

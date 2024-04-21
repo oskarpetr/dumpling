@@ -3,6 +3,7 @@ using System;
 using Dumpling.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dumpling.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240416125617_sixth")]
+    partial class sixth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,6 +84,28 @@ namespace Dumpling.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserLessons");
+                });
+
+            modelBuilder.Entity("Dumpling.Data.UserWord", b =>
+                {
+                    b.Property<string>("UserWordId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("WordId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("UserWordId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("WordId");
+
+                    b.ToTable("UserWords");
                 });
 
             modelBuilder.Entity("Dumpling.Data.Word", b =>
@@ -328,6 +353,25 @@ namespace Dumpling.Migrations
                     b.Navigation("Lesson");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Dumpling.Data.UserWord", b =>
+                {
+                    b.HasOne("Dumpling.Data.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Dumpling.Data.Word", "Word")
+                        .WithMany()
+                        .HasForeignKey("WordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("Word");
                 });
 
             modelBuilder.Entity("Dumpling.Data.Word", b =>
