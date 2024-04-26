@@ -10,5 +10,6 @@ public class UserLesson
     public string UserId { get; set; }
     public virtual User User { get; set; }
 
-    public bool Completed { get; set; } = false;
+    public int Practised { get; set; } = 0;
+    public int BestScore { get; set; } = 0;
 }

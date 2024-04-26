@@ -1,5 +1,5 @@
 import { X } from "@phosphor-icons/react";
-import { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 import { Subtitle } from "./Titles";
 import { cn } from "@/utils/cn";
 
@@ -37,7 +37,7 @@ export default function Modal({
           </button>
         </div>
 
-        {children}
+        <div className="flex flex-col gap-8">{children}</div>
       </div>
     </div>
   );

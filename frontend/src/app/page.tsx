@@ -2,12 +2,11 @@
 
 import Layout from "@/components/Layout";
 import Lesson from "@/components/Lesson";
-import Modal from "@/components/Modal";
 import { Title } from "@/components/Titles";
 import LessonSkeleton from "@/components/skeletons/LessonSkeleton";
+import { cn } from "@/utils/cn";
 import { fetchLessons } from "@/utils/fetchers";
 import { LessonType } from "@/utils/lesson.types";
-import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
@@ -34,8 +33,6 @@ export default function HomePage() {
         {lessons.map((lesson, index) => (
           <Lesson key={lesson.lessonId} lesson={lesson} index={index} />
         ))}
-
-        {/* <LessonSkeleton /> */}
 
         {loading &&
           [...Array(3)].map((_, index) => <LessonSkeleton key={index} />)}

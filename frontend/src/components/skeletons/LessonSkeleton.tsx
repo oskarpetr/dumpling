@@ -1,8 +1,5 @@
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-
 export default function LessonSkeleton() {
   return (
-    <Skeleton width={270} height={96} borderRadius={12} className="m-0 p-0" />
+    <div className="m-0 p-0 w-[270px] h-[90.5px] border bg-neutral-800 border-neutral-700 rounded-xl"></div>
   );
 }

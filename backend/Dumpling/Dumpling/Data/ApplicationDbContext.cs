@@ -9,6 +9,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Word> Words { get; set; }
     public DbSet<Lesson> Lessons { get; set; }
     public DbSet<UserLesson> UserLessons { get; set; }
+    public DbSet<Xp> Xps { get; set; }
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)

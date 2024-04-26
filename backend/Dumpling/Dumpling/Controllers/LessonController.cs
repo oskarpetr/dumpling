@@ -21,7 +21,8 @@ public class LessonController : Controller
         public string name { get; set; }
         public string translation { get; set; }
         public List<Word> words { get; set; }
-        public bool completed { get; set; }
+        public int practised { get; set; }
+        public int bestScore { get; set; }
     }
     
     [EnableCors("AllowSpecificOrigin")]
@@ -51,8 +52,9 @@ public class LessonController : Controller
                 lessonId = lesson.LessonId,
                 name = lesson.Name,
                 translation = lesson.Translation,
-                completed = userLessons.ElementAt(lessons.IndexOf(lesson)).Completed,
-                words = words
+                words = words,
+                practised = userLessons.ElementAt(lessons.IndexOf(lesson)).Practised,
+                bestScore = userLessons.ElementAt(lessons.IndexOf(lesson)).BestScore
             });
         }
         

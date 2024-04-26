@@ -5,5 +5,6 @@ export interface LessonType {
   name: string;
   translation: string;
   words: WordType[];
-  completed: boolean;
+  bestScore: number;
+  practised: number;
 }

@@ -5,7 +5,11 @@ interface Props {
 }
 
 export function Title({ title }: Props) {
-  return <h1 className="font-bold text-3xl mb-8">{title}</h1>;
+  return (
+    <div className="flex items-center gap-2 mb-8">
+      <h1 className="font-bold text-3xl">{title}</h1>
+    </div>
+  );
 }
 
 export function Subtitle({ title }: Props) {

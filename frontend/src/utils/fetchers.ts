@@ -11,3 +11,18 @@ export async function fetchLessons() {
 
   return response.data;
 }
+
+export async function fetchXpMe() {
+  const response = await axios.get(API_URL + "xps/me", {
+    headers: {
+      Authorization: "b332aee7-c1b5-4454-b489-21f342ff611d",
+    },
+  });
+
+  return response.data;
+}
+
+export async function fetchXpList() {
+  const response = await axios.get(API_URL + "xps/list");
+  return response.data;
+}
