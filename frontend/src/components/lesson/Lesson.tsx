@@ -9,7 +9,7 @@ import {
 } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useState } from "react";
-import Modal from "./Modal";
+import Modal from "../Modal";
 
 interface Props {
   lesson: LessonType;
@@ -40,7 +40,7 @@ export default function Lesson({ lesson, index }: Props) {
           </div>
 
           <div className="text-neutral-400 font-bold text-sm">
-            {lesson.words.length} new words
+            {lesson.words.length} Words
           </div>
         </div>
 
@@ -78,16 +78,16 @@ export default function Lesson({ lesson, index }: Props) {
             <div className="text-neutral-400 font-bold text-sm">
               Times practised
             </div>
-            <div className="font-bold">{lesson.practised} times</div>
+            <div className="font-bold">{lesson.practised} Times</div>
           </div>
         </div>
 
         <Link
-          href={`/lessons/${index + 1}`}
+          href={`/lessons/${lesson.lessonId}`}
           className="w-full py-2 rounded-xl bg-blue-600 flex gap-2 items-center justify-center border-blue-500 border border-b-4 active:border active:mt-[3px] transition-all"
           onClick={() => setLoadingPage(true)}
         >
-          <span className="font-semibold">Start lesson</span>
+          <span className="font-bold">Start lesson</span>
           {loadingPage ? (
             <Spinner size={20} className="animate-spin" />
           ) : (

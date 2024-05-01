@@ -26,3 +26,8 @@ export async function fetchXpList() {
   const response = await axios.get(API_URL + "xps/list");
   return response.data;
 }
+
+export async function fetchLesson(lessonId: string) {
+  const response = await axios.get(API_URL + `lessons/${lessonId}`);
+  return response.data;
+}

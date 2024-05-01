@@ -13,5 +13,5 @@ export function Title({ title }: Props) {
 }
 
 export function Subtitle({ title }: Props) {
-  return <h2 className="font-bold text-2xl mb-4">{title}</h2>;
+  return <h2 className="font-bold text-2xl mb-6">{title}</h2>;
 }

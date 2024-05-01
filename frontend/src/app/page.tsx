@@ -1,10 +1,10 @@
 "use client";
 
-import Layout from "@/components/Layout";
-import Lesson from "@/components/Lesson";
+import Lesson from "@/components/lesson/Lesson";
+import NavBar from "@/components/navbars/NavBar";
 import { Title } from "@/components/Titles";
+import Layout from "@/components/layouts/Layout";
 import LessonSkeleton from "@/components/skeletons/LessonSkeleton";
-import { cn } from "@/utils/cn";
 import { fetchLessons } from "@/utils/fetchers";
 import { LessonType } from "@/utils/lesson.types";
 import { useEffect, useState } from "react";
