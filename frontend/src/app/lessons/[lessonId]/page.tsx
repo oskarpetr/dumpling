@@ -20,6 +20,7 @@ export default function LessonPage() {
   const [answer, setAnswer] = useState<null | string>(null);
   const [question, setQuestion] = useState(0);
   const [correctly, setCorrectly] = useState(0);
+  const [wrong, setWrong] = useState(false);
 
   // tooltip state
   const [wordTooltip, setWordTooltip] = useState(false);
@@ -88,7 +89,7 @@ export default function LessonPage() {
                   <div className="text-[13px] text-neutral-400 leading-[10px]">
                     {lessonContent[question].word.pronunciation}
                   </div>
-                  <div className="zh text-2xl border-b border-dotted border-neutral-500">
+                  <div className="zh text-2xl border-b-2 border-dotted border-neutral-400">
                     {lessonContent[question].word.value}
                   </div>
 
@@ -112,6 +113,8 @@ export default function LessonPage() {
               </div>
               <Options
                 options={lessonContent[question].options}
+                correct={lessonContent[question].word}
+                setWrong={setWrong}
                 answer={answer}
                 setAnswer={setAnswer}
               />
@@ -119,12 +122,12 @@ export default function LessonPage() {
               <div
                 className={cn(
                   "mt-8 transition-all duration-500",
-                  answer ? "opacity-100" : "opacity-0"
+                  answer && !wrong ? "opacity-100" : "opacity-0"
                 )}
               >
                 <button
                   className="w-full rounded-xl py-3.5 flex justify-center items-center gap-2 border border-b-4 bg-neutral-800 font-semibold transition-all enabled:active:mt-[3px] enabled:bg-neutral-800 enabled:border-neutral-700 enabled:active:border disabled:text-neutral-400 disabled:border-neutral-700"
-                  disabled={answer == null}
+                  disabled={answer == null || wrong}
                   onClick={continueLesson}
                 >
                   Continue
