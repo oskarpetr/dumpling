@@ -11,7 +11,7 @@ import WordTooltip from "@/components/modals/WordTooltip";
 import LessonLayout from "@/components/layouts/LessonLayout";
 import Options from "@/components/lesson/Options";
 import Image from "next/image";
-import { Subtitle, Title } from "@/components/Titles";
+import { Subtitle } from "@/components/Titles";
 
 export default function LessonPage() {
   const { lessonId } = useParams();
@@ -174,8 +174,8 @@ export default function LessonPage() {
                   </div>
                   <div className="text-neutral-400">
                     You have successfully reviewed {lessonContent.length} words
-                    in this lesson. Now, you can move on to practising these
-                    words in sentences.
+                    in this lesson. Now, you can move on to learning new words
+                    in other lessons.
                   </div>
                 </div>
               </div>

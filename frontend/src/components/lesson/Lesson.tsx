@@ -40,7 +40,7 @@ export default function Lesson({ lesson, index }: Props) {
           </div>
 
           <div className="text-neutral-400 font-bold text-sm">
-            {lesson.words.length} Words
+            {lesson.words.length} {lesson.words.length !== 1 ? "Words" : "Word"}
           </div>
         </div>
 
@@ -78,7 +78,9 @@ export default function Lesson({ lesson, index }: Props) {
             <div className="text-neutral-400 font-bold text-sm">
               Times practised
             </div>
-            <div className="font-bold">{lesson.practised} Times</div>
+            <div className="font-bold">
+              {lesson.practised} {lesson.practised !== 1 ? "Times" : "Time"}
+            </div>
           </div>
         </div>
 

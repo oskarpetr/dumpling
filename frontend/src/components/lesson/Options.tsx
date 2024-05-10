@@ -1,4 +1,6 @@
+import { cn } from "@/utils/cn";
 import { WordType } from "@/utils/word.types";
+import { CheckCircle, XCircle } from "@phosphor-icons/react";
 import { Dispatch, SetStateAction, useEffect } from "react";
 
 interface Props {
@@ -32,9 +34,20 @@ export default function Options({
                 ? "border-blue-500 bg-blue-600"
                 : "border-red-600 bg-red-700"
               : "border-neutral-700 bg-neutral-800"
-          } w-full border border-b-4 py-3.5 rounded-xl transition-all active:border active:mt-[3px]`}
+          } w-full flex items-center justify-center px-6 border border-b-4 py-3.5 rounded-xl transition-all active:border active:mt-[3px]`}
         >
-          {option}
+          <div>{option}</div>
+          <div className="absolute ml-60">
+            {answer === option && (
+              <>
+                {answer === correct.meaning ? (
+                  <CheckCircle weight="fill" size={24} />
+                ) : (
+                  <XCircle weight="fill" size={24} />
+                )}
+              </>
+            )}
+          </div>
         </button>
       ))}
     </div>
