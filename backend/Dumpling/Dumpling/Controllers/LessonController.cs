@@ -1,7 +1,8 @@
 using Dumpling.Data;
+using Dumpling.Functions;
+using Dumpling.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Dumpling.Controllers;
 
@@ -17,12 +18,12 @@ public class LessonController : Controller
 
     private class LessonModel
     {
-        public string lessonId { get; set; }
-        public string name { get; set; }
-        public string translation { get; set; }
-        public List<Word> words { get; set; }
-        public int practised { get; set; }
-        public int bestScore { get; set; }
+        public string LessonId { get; set; }
+        public string Name { get; set; }
+        public string Translation { get; set; }
+        public List<Word> Words { get; set; }
+        public int Practised { get; set; }
+        public int BestScore { get; set; }
     }
     
     [EnableCors("AllowSpecificOrigin")]
@@ -49,15 +50,108 @@ public class LessonController : Controller
             
             lessonModels.Add(new LessonModel()
             {
-                lessonId = lesson.LessonId,
-                name = lesson.Name,
-                translation = lesson.Translation,
-                words = words,
-                practised = userLessons.ElementAt(lessons.IndexOf(lesson)).Practised,
-                bestScore = userLessons.ElementAt(lessons.IndexOf(lesson)).BestScore
+                LessonId = lesson.LessonId,
+                Name = lesson.Name,
+                Translation = lesson.Translation,
+                Words = words,
+                Practised = userLessons.ElementAt(lessons.IndexOf(lesson)).Practised,
+                BestScore = userLessons.ElementAt(lessons.IndexOf(lesson)).BestScore
             });
         }
         
         return Json(lessonModels);
     }
+    
+    private class LessonContentModel
+    {
+        public Word Word { get; set; }
+        public List<string> Options { get; set; }
+    }
+
+    [EnableCors("AllowSpecificOrigin")]
+    [HttpGet(Api.LessonScheme.LESSON)]
+    public IActionResult Lesson(string lessonId)
+    {
+        var lessonContent = new List<LessonContentModel>();
+        
+        var words = _database.Words.Where(x => x.LessonId == lessonId).ToList();
+        
+        words.ForEach(x =>
+        {
+            var options = new List<string>();
+
+            for (var i = 0; i < 4; i++)
+            {
+                var random = new Random().Next(0, words.Count);
+                while (options.Contains(words.ElementAt(random).Meaning) || random == words.IndexOf(x))
+                {
+                    random = new Random().Next(0, words.Count);
+                };
+                
+                options.Add(words.ElementAt(random).Meaning);
+            }
+
+            int answerIndex = new Random().Next(0, 4);
+            options[answerIndex] = x.Meaning;
+            
+            lessonContent.Add(new LessonContentModel()
+            {
+               Word = x,
+               Options = options
+            });
+        });
+        
+        return Json(lessonContent);
+    }
+
+    private class PractiseContentModel
+    {
+        public string Type  { get; set; }
+        public object Options { get; set; }
+    }
+    
+    [EnableCors("AllowSpecificOrigin")]
+    [HttpGet(Api.LessonScheme.PRACTISE)]
+    public IActionResult Practise(string lessonId)
+    {
+        var words = _database.Words.Where(x => x.LessonId == lessonId).ToList();
+        var exercises = new List<PractiseContentModel>();
+        var generatePractise = new GeneratePractise();
+        
+        for (var i = 0; i < 10; i++)
+        {
+            // int exerciseRandom = new Random().Next(0, Enum.GetNames(typeof(PractiseType)).Length);;
+            // PractiseType exerciseType = (PractiseType)exerciseRandom;
+    
+            // if (exerciseType == PractiseType.MATCHING)
+            // {
+            var options = generatePractise.MatchingExercise(words);
+            exercises.Add(new PractiseContentModel()
+            {
+                // Type = Enum.GetName(typeof(PractiseType), exerciseType),
+                Type = "MATCHING",
+                Options = options
+            });
+            // }
+        }
+        
+        return Json(exercises);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

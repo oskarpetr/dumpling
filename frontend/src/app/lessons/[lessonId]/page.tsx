@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchLesson } from "@/utils/fetchers";
+import { fetchLesson, fetchPractise } from "@/utils/fetchers";
 import { LessonContentType } from "@/utils/lesson-content.types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -28,15 +28,25 @@ export default function LessonPage() {
   // lesson content state
   const [loading, setLoading] = useState(true);
   const [lessonContent, setLessonContent] = useState<LessonContentType[]>([]);
+  const [practiseContent, setPractiseContent] = useState<LessonContentType[]>(
+    []
+  );
 
   // lesson progress percentage
   const progressPercentage = (question / lessonContent?.length) * 100;
 
   useEffect(() => {
-    fetchLesson(lessonId as string).then((lesson) => {
+    const fetchLessonContent = async () => {
+      const lesson = await fetchLesson(lessonId as string);
       setLessonContent(lesson);
+
+      const practise = await fetchPractise(lessonId as string);
+      setPractiseContent(practise);
+      console.log(practise);
       setLoading(false);
-    });
+    };
+
+    fetchLessonContent();
   }, []);
 
   // continue lesson
@@ -174,8 +184,8 @@ export default function LessonPage() {
                   </div>
                   <div className="text-neutral-400">
                     You have successfully reviewed {lessonContent.length} words
-                    in this lesson. Now, you can move on to learning new words
-                    in other lessons.
+                    in this lesson. Now, you can move on to practising these
+                    words in sentences.
                   </div>
                 </div>
               </div>
@@ -196,6 +206,10 @@ export default function LessonPage() {
             </motion.button>
           </div>
         </div>
+      )}
+
+      {practiseContent && !loading && question !== lessonContent.length && (
+        <div></div>
       )}
     </LessonLayout>
   );

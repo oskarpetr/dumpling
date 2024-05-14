@@ -1,7 +1,6 @@
 "use client";
 
 import Lesson from "@/components/lesson/Lesson";
-import NavBar from "@/components/navbars/NavBar";
 import { Title } from "@/components/Titles";
 import Layout from "@/components/layouts/Layout";
 import LessonSkeleton from "@/components/skeletons/LessonSkeleton";

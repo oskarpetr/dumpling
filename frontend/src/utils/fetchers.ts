@@ -35,3 +35,9 @@ export async function fetchLesson(lessonId: string) {
   const response = await axios.get(API_URL + `lessons/${lessonId}`);
   return response.data;
 }
+
+// fetch practise
+export async function fetchPractise(lessonId: string) {
+  const response = await axios.get(API_URL + `practise/${lessonId}`);
+  return response.data;
+}

@@ -17,7 +17,7 @@ public class XpController : Controller
     
     [EnableCors("AllowSpecificOrigin")]
     [HttpGet(Api.XpScheme.XPS)]
-    public IActionResult Words()
+    public IActionResult Xps()
     {
         var xps = _database.Xps.ToList();
         return Json(xps);
