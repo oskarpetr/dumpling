@@ -1,14 +1,16 @@
 export enum PractiseType {
-  MATCHING,
-  MULTIPLE_CHOICE,
-  WRITING,
-  PRONUNCIATION,
+  MATCHING = "MATCHING",
+  MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
+  WRITING = "WRITING",
+  PRONUNCIATION = "PRONUNCIATION",
 }
 
 export type LessonPractiseType = {
   type: PractiseType.MATCHING;
-  options: {
-    pairs: string[][];
-    answers: string[][];
-  };
+  options: MatchingType;
+};
+
+export type MatchingType = {
+  pairs: string[][];
+  answers: string[][];
 };
