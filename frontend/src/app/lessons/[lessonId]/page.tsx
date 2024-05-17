@@ -36,6 +36,8 @@ export default function LessonPage() {
   const [practiseContent, setPractiseContent] = useState<LessonPractiseType[]>(
     []
   );
+  const [answered, setAnswered] = useState<boolean>(false);
+  const [reset, setReset] = useState<boolean>(false);
 
   // lesson progress percentage
   const progressPercentage = (question / lessonContent?.length) * 100;
@@ -64,6 +66,13 @@ export default function LessonPage() {
     // next question
     setQuestion((prev) => prev + 1);
     setAnswer(null);
+  };
+
+  // continue practise
+  const continuePractise = () => {
+    setQuestion((prev) => prev + 1);
+    setAnswered(false);
+    setReset(true);
   };
 
   // practise subheading
@@ -151,8 +160,7 @@ export default function LessonPage() {
                   Select an answer
                 </div>
                 <Options
-                  options={lessonContent[question].options}
-                  correct={lessonContent[question].answer}
+                  content={lessonContent[question]}
                   setWrong={setWrong}
                   answer={answer}
                   setAnswer={setAnswer}
@@ -252,18 +260,25 @@ export default function LessonPage() {
                 transition={{ duration: 0.5, delay: 1 }}
                 className="flex flex-col gap-4 mt-4"
               >
-                <Matching matching={practiseContent[question].options} />
+                {practiseType === PractiseType.MATCHING && (
+                  <Matching
+                    matching={practiseContent[question].options}
+                    answered={answered}
+                    setAnswered={setAnswered}
+                    onReset={reset}
+                  />
+                )}
 
                 <div
                   className={cn(
                     "mt-8 transition-all duration-500",
-                    answer && !wrong ? "opacity-100" : "opacity-0"
+                    answered ? "opacity-100" : "opacity-0"
                   )}
                 >
                   <button
                     className="w-full rounded-xl py-3.5 flex justify-center items-center gap-2 border border-b-4 bg-neutral-800 font-semibold transition-all enabled:active:mt-[3px] enabled:bg-neutral-800 enabled:border-neutral-700 enabled:active:border disabled:text-neutral-400 disabled:border-neutral-700"
-                    disabled={answer == null || wrong}
-                    onClick={continueLesson}
+                    disabled={!answered}
+                    onClick={continuePractise}
                   >
                     Continue
                     <ArrowRight
