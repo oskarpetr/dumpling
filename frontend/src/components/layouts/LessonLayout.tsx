@@ -4,13 +4,23 @@ import LessonNavBar from "../navbars/LessonNavBar";
 interface Props {
   children: React.ReactNode;
   percentage: number;
-  lesson: LessonType;
+  currentQuestion: number;
+  questionsLength: number;
 }
 
-export default function LessonLayout({ percentage, lesson, children }: Props) {
+export default function LessonLayout({
+  percentage,
+  children,
+  currentQuestion,
+  questionsLength,
+}: Props) {
   return (
     <>
-      <LessonNavBar percentage={percentage} lesson={lesson} />
+      <LessonNavBar
+        percentage={percentage}
+        currentQuestion={currentQuestion}
+        questionsLength={questionsLength}
+      />
       {children}
     </>
   );

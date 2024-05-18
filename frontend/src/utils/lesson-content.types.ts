@@ -1,6 +1,6 @@
 import { WordType } from "./word.types";
 
-export interface LessonContentType {
+export interface LessonLearningType {
   answer: WordType;
   options: string[];
 }

@@ -4,19 +4,13 @@ import { CheckCircle, XCircle } from "@phosphor-icons/react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface Props {
-  matching: MatchingType;
+  question: MatchingType;
   answered: boolean;
   setAnswered: Dispatch<SetStateAction<boolean>>;
-  onReset: boolean;
 }
 
-export default function Matching({
-  matching,
-  answered,
-  setAnswered,
-  onReset,
-}: Props) {
-  const [pairs, setPairs] = useState(matching.pairs);
+export default function Matching({ question, answered, setAnswered }: Props) {
+  const [pairs, setPairs] = useState(question.pairs);
   const [value, setValue] = useState<string | null>();
   const [meaning, setMeaning] = useState<string | null>();
   const [selectedPairs, setSelectedPairs] = useState(0);
@@ -51,30 +45,21 @@ export default function Matching({
     if (selectedPairs === pairs.length - 1) {
       setAnswered(true);
     }
-    console.log(pairs);
   }, [pairs]);
-
-  useEffect(() => {
-    if (onReset) {
-      setPairs([]);
-      setValue(null);
-      setMeaning(null);
-      setSelectedPairs(0);
-      setAnswered(false);
-    }
-  }, [onReset]);
 
   return (
     <div
       className="grid grid-cols-1 gap-4 transition-all"
-      key={matching.answers.toString()}
+      key={question.answers.toString()}
     >
+      <div className="font-bold text-sm text-neutral-400">
+        Match words together
+      </div>
       {pairs.map((pair, index) => {
         const correct =
           answered &&
-          matching.answers.find((answer) => answer[0] == pair[0])![1] ==
+          question.answers.find((answer) => answer[0] == pair[0])![1] ==
             pair[1];
-        console.log(correct);
 
         return (
           <div
