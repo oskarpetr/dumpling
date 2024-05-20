@@ -26,7 +26,7 @@ export default function LessonNavBar({
       <div className="h-5 rounded-full bg-neutral-700 w-[40rem] self-center">
         <div
           className="h-5 rounded-full bg-blue-600 transition-all duration-500"
-          style={{ width: percentage + "%" }}
+          style={{ width: percentage * 720 + "px" }}
         ></div>
       </div>
 

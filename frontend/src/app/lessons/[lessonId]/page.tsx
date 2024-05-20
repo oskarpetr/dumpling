@@ -29,7 +29,9 @@ export default function LessonPage() {
   const [learningDone, setLearningDone] = useState(false);
 
   // lesson progress percentage
-  const progressPercentage = (question / lessonContent?.length) * 100;
+  const progressPercentage = !learningDone
+    ? question / lessonContent?.length
+    : question / practiseContent?.length;
 
   useEffect(() => {
     const fetchLessonContent = async () => {

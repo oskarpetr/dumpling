@@ -64,7 +64,7 @@ public class LessonController : Controller
     
     private class LessonContentModel
     {
-        public Word Word { get; set; }
+        public Word Answer { get; set; }
         public List<string> Options { get; set; }
     }
 
@@ -96,7 +96,7 @@ public class LessonController : Controller
             
             lessonContent.Add(new LessonContentModel()
             {
-               Word = x,
+               Answer = x,
                Options = options
             });
         });
@@ -106,8 +106,8 @@ public class LessonController : Controller
 
     private class PractiseContentModel
     {
-        public string Type  { get; set; }
-        public object Options { get; set; }
+        public string Type { get; set; }
+        public object Task { get; set; }
     }
     
     [EnableCors("AllowSpecificOrigin")]
@@ -118,21 +118,49 @@ public class LessonController : Controller
         var exercises = new List<PractiseContentModel>();
         var generatePractise = new GeneratePractise();
         
+        PractiseType lastExercise = PractiseType.MATCHING;
         for (var i = 0; i < 10; i++)
         {
-            // int exerciseRandom = new Random().Next(0, Enum.GetNames(typeof(PractiseType)).Length);;
-            // PractiseType exerciseType = (PractiseType)exerciseRandom;
-    
-            // if (exerciseType == PractiseType.MATCHING)
-            // {
-            var options = generatePractise.MatchingExercise(words);
-            exercises.Add(new PractiseContentModel()
+            int exerciseRandom = new Random().Next(0, Enum.GetNames(typeof(PractiseType)).Length);;
+            PractiseType exerciseType = (PractiseType)exerciseRandom;
+
+            while (exerciseType == lastExercise)
             {
-                // Type = Enum.GetName(typeof(PractiseType), exerciseType),
-                Type = "MATCHING",
-                Options = options
-            });
-            // }
+                exerciseRandom = new Random().Next(0, Enum.GetNames(typeof(PractiseType)).Length);;
+                exerciseType = (PractiseType)exerciseRandom;
+            }
+            
+            lastExercise = exerciseType;
+
+            var content = new PractiseContentModel()
+            {
+                Type = Enum.GetName(typeof(PractiseType), exerciseType),
+                Task = new()
+            };
+            
+            if (exerciseType == PractiseType.MATCHING)
+            {
+                var options = generatePractise.MatchingExercise(words);
+                content.Task = options;
+                
+            }
+            else if (exerciseType == PractiseType.MULTIPLE_CHOICE)
+            {
+                var options = generatePractise.MultipleChoiceExercise(words);
+                content.Task = options;
+            }
+            else if (exerciseType == PractiseType.PRONUNCIATION)
+            {
+                var options = generatePractise.PronunciationExercise(words);
+                content.Task = options;
+            }
+            else if(exerciseType == PractiseType.WRITING)
+            {
+                var options = generatePractise.WritingExercise(words);
+                content.Task = options;
+            }
+            
+            exercises.Add(content);
         }
         
         return Json(exercises);

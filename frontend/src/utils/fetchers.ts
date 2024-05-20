@@ -41,3 +41,12 @@ export async function fetchPractise(lessonId: string) {
   const response = await axios.get(API_URL + `practise/${lessonId}`);
   return response.data;
 }
+
+// create account
+export async function postAccount(username: string, password: string) {
+  const response = await axios.post(API_URL + "accounts", {
+    username,
+    password,
+  });
+  return response.data;
+}

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Toaster } from "sonner";
+import SessionWrapper from "@/components/layouts/SessionWrapper";
 
 export const metadata: Metadata = {
   title: "Dumpling",
@@ -12,8 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+    <SessionWrapper>
+      <html lang="en">
+        <body>{children}</body>
+        <Toaster richColors />
+      </html>
+    </SessionWrapper>
   );
 }
