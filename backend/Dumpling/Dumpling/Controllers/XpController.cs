@@ -23,10 +23,10 @@ public class XpController : Controller
         return Json(xps);
     }
     
-    private class XpModel
+    public class XpModel
     {
-        public int value { get; set; }
-        public int rank { get; set; }
+        public int Value { get; set; }
+        public int Rank { get; set; }
     }
     
     [EnableCors("AllowSpecificOrigin")]
@@ -39,11 +39,13 @@ public class XpController : Controller
         var xp = _database.Xps.FirstOrDefault(x => x.UserId == authorizationToken);
         var rank = _database.Xps.OrderByDescending(x => x.Value).ToList().IndexOf(xp) + 1;
 
-        return Json(new XpModel()
+        var model = new XpModel()
         {
-            value = xp.Value,
-            rank = rank
-        });
+            Value = xp.Value,
+            Rank = rank
+        };
+        
+        return Json(model);
     }
     
     [EnableCors("AllowSpecificOrigin")]

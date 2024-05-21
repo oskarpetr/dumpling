@@ -1,8 +1,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import WordTooltip from "../modals/WordTooltip";
-import Options from "../lesson/Options";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import {
   LessonPractiseType,
   PractiseType,
@@ -13,9 +12,14 @@ import { CheckCircle, XCircle } from "@phosphor-icons/react";
 interface Props {
   question: LessonPractiseType;
   setAnswered: Dispatch<SetStateAction<boolean>>;
+  setCorrectly: Dispatch<SetStateAction<number>>;
 }
 
-export default function Writing({ question, setAnswered }: Props) {
+export default function Writing({
+  question,
+  setAnswered,
+  setCorrectly,
+}: Props) {
   // tooltip state
   const [wordTooltip, setWordTooltip] = useState(false);
 
@@ -30,6 +34,8 @@ export default function Writing({ question, setAnswered }: Props) {
       answer !== question.task.answer.meaning
     ) {
       setWrong(true);
+    } else {
+      setCorrectly((prev) => prev + 1);
     }
 
     setAnswered(true);

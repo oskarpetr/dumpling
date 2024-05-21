@@ -7,9 +7,15 @@ interface Props {
   question: MatchingType;
   answered: boolean;
   setAnswered: Dispatch<SetStateAction<boolean>>;
+  setCorrectly: Dispatch<SetStateAction<number>>;
 }
 
-export default function Matching({ question, answered, setAnswered }: Props) {
+export default function Matching({
+  question,
+  answered,
+  setAnswered,
+  setCorrectly,
+}: Props) {
   const [pairs, setPairs] = useState(question.pairs);
   const [value, setValue] = useState<string | null>();
   const [meaning, setMeaning] = useState<string | null>();
@@ -44,6 +50,16 @@ export default function Matching({ question, answered, setAnswered }: Props) {
   useEffect(() => {
     if (selectedPairs === pairs.length - 1) {
       setAnswered(true);
+
+      let correct = 0;
+      pairs.forEach((pair) => {
+        if (
+          question.answers.find((answer) => answer[0] == pair[0])![1] == pair[1]
+        ) {
+          correct++;
+        }
+      });
+      setCorrectly((prev) => prev + correct / pairs.length);
     }
   }, [pairs]);
 

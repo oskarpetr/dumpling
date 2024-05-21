@@ -50,3 +50,33 @@ export async function postAccount(username: string, password: string) {
   });
   return response.data;
 }
+
+// sign in
+export async function signIn(username: string) {
+  const devUrl = "http://localhost:3030/api/sign-in";
+  const prodUrl = "https://dumpling.oskarpetr.dev/api/sign-in";
+
+  // const response = await fetch(
+  //   process.env.NODE_ENV === "development" ? devUrl : prodUrl,
+  //   {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ username }),
+  //   }
+  // );
+  const response = await axios.post(
+    process.env.NODE_ENV === "development" ? devUrl : prodUrl,
+    { username }
+  );
+  return response.data;
+}
+
+// completed lesson
+export async function postCompleteLesson(lessonId: string, xp: number) {
+  const response = await axios.post(API_URL + `complete/${lessonId}`, {
+    xp,
+  });
+  return response.data;
+}

@@ -15,9 +15,14 @@ import Writing from "./Writing";
 interface Props {
   question: LessonPractiseType;
   setQuestion: Dispatch<SetStateAction<number>>;
+  setCorrectly: Dispatch<SetStateAction<number>>;
 }
 
-export default function PractiseMode({ question, setQuestion }: Props) {
+export default function PractiseMode({
+  question,
+  setQuestion,
+  setCorrectly,
+}: Props) {
   const [answered, setAnswered] = useState(false);
 
   // practise subheading
@@ -56,19 +61,32 @@ export default function PractiseMode({ question, setQuestion }: Props) {
               question={question.task}
               answered={answered}
               setAnswered={setAnswered}
+              setCorrectly={setCorrectly}
             />
           )}
 
           {question.type === PractiseType.MULTIPLE_CHOICE && (
-            <MultipleChoice question={question} setAnswered={setAnswered} />
+            <MultipleChoice
+              question={question}
+              setAnswered={setAnswered}
+              setCorrectly={setCorrectly}
+            />
           )}
 
           {question.type === PractiseType.PRONUNCIATION && (
-            <Pronunciation question={question} setAnswered={setAnswered} />
+            <Pronunciation
+              question={question}
+              setAnswered={setAnswered}
+              setCorrectly={setCorrectly}
+            />
           )}
 
           {question.type === PractiseType.WRITING && (
-            <Writing question={question} setAnswered={setAnswered} />
+            <Writing
+              question={question}
+              setAnswered={setAnswered}
+              setCorrectly={setCorrectly}
+            />
           )}
 
           <div

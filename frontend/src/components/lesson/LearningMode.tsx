@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Subtitle } from "../Titles";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { LessonLearningType } from "@/utils/lesson-content.types";
 import WordTooltip from "../modals/WordTooltip";
 import Options from "./Options";

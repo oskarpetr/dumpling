@@ -58,6 +58,23 @@ public class LessonController : Controller
                 BestScore = userLessons.ElementAt(lessons.IndexOf(lesson)).BestScore
             });
         }
+
+        var standardLessons = _database.Lessons.ToList();
+        foreach (var lesson in standardLessons)
+        {
+            if (lessons.FirstOrDefault(x => x.LessonId == lesson.LessonId) == null)
+            {
+                lessonModels.Add(new LessonModel()
+                {
+                    LessonId = lesson.LessonId,
+                    Name = lesson.Name,
+                    Translation = lesson.Translation,
+                    Words = _database.Words.Where(x => x.LessonId == lesson.LessonId).ToList(),
+                    Practised = 0,
+                    BestScore = 0
+                });
+            }
+        }
         
         return Json(lessonModels);
     }
@@ -164,6 +181,42 @@ public class LessonController : Controller
         }
         
         return Json(exercises);
+    }
+
+    public class CompleteModel
+    {
+        public int xp { get; set; }
+    }
+
+    [EnableCors("AllowSpecificOrigin")]
+    [HttpPost(Api.LessonScheme.COMPLETE)]
+    public IActionResult Lesson(string lessonId, [FromBody] CompleteModel model)
+    {
+        // var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
+        var authorizationToken = "b332aee7-c1b5-4454-b489-21f342ff611d";
+        
+        var userLesson = _database.UserLessons.FirstOrDefault(x => x.UserId == authorizationToken && x.LessonId == lessonId);
+        if(userLesson == null)
+        {
+            _database.UserLessons.Add(new UserLesson()
+            {
+                UserId = authorizationToken,
+                LessonId = lessonId,
+                Practised = 1,
+                BestScore = (int)Math.Floor(((float)model.xp / 200) * 5)
+            });
+        }
+        else
+        {
+            userLesson.Practised++;
+            userLesson.BestScore = Math.Max(userLesson.BestScore, (int)Math.Floor(((float)model.xp / 200) * 5));
+        }
+
+        var xp = _database.Xps.FirstOrDefault(x => x.UserId == authorizationToken);
+        xp.Value += model.xp;
+
+        _database.SaveChanges();
+        return Ok();
     }
 }
 

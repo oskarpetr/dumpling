@@ -2,7 +2,7 @@ namespace Dumpling.Data;
 
 public class Xp
 {
-    public string XpId { get; set; }
+    public string XpId { get; set; } = Guid.NewGuid().ToString();
 
     public int Value { get; set; } = 0;
     

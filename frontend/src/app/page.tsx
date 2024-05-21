@@ -15,9 +15,10 @@ export default function HomePage() {
   // });
 
   useEffect(() => {
-    fetchLessons().then((lessons) => {
-      setLessons(lessons);
+    fetchLessons().then((data) => {
+      setLessons(data);
       setLoading(false);
+      console.log(data);
     });
   }, []);
 

@@ -48,7 +48,7 @@ export default function SignIn() {
       callbackUrl: "/",
       redirect: false,
     });
-
+    console.log(signInRes);
     if (signInRes?.ok) {
       router.push(signInRes.url!);
       toast.success("You have been signed in.");

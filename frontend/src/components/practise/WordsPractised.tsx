@@ -1,19 +1,24 @@
-import {
-  ArrowRight,
-  Cards,
-  CardsThree,
-  CheckCircle,
-  House,
-} from "@phosphor-icons/react";
+import { postCompleteLesson } from "@/utils/fetchers";
+import { CardsThree, CheckCircle } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 
 interface Props {
+  lessonId: string;
   xp: number;
 }
 
-export default function WordsPractised({ xp }: Props) {
+export default function WordsPractised({ lessonId, xp }: Props) {
+  useEffect(() => {
+    const completeLesson = async () => {
+      await postCompleteLesson(lessonId, xp);
+    };
+
+    completeLesson();
+  }, []);
+
   return (
     <div className="flex justify-center items-center">
       <div className="flex flex-col mt-48 gap-12 w-[35rem]">

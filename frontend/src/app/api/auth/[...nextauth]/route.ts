@@ -2,4 +2,4 @@ import AuthOptions from "@/utils/auth";
 
 const handler = AuthOptions;
 
-export default handler;
+export { handler as GET, handler as POST };

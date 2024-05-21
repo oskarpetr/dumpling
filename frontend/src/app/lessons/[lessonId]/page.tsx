@@ -26,7 +26,7 @@ export default function LessonPage() {
   );
 
   // learning done
-  const [learningDone, setLearningDone] = useState(false);
+  const [learningDone, setLearningDone] = useState(true);
 
   // lesson progress percentage
   const progressPercentage = !learningDone
@@ -90,11 +90,12 @@ export default function LessonPage() {
           <PractiseMode
             question={practiseContent[question]}
             setQuestion={setQuestion}
+            setCorrectly={setCorrectly}
           />
         )}
 
       {question === practiseContent.length && learningDone && (
-        <WordsPractised xp={200} />
+        <WordsPractised lessonId={lessonId as string} xp={correctly * 20} />
       )}
     </LessonLayout>
   );

@@ -11,9 +11,14 @@ import {
 interface Props {
   question: LessonPractiseType;
   setAnswered: Dispatch<SetStateAction<boolean>>;
+  setCorrectly: Dispatch<SetStateAction<number>>;
 }
 
-export default function MultipleChoice({ question, setAnswered }: Props) {
+export default function MultipleChoice({
+  question,
+  setAnswered,
+  setCorrectly,
+}: Props) {
   // tooltip state
   const [wordTooltip, setWordTooltip] = useState(false);
 
@@ -24,6 +29,13 @@ export default function MultipleChoice({ question, setAnswered }: Props) {
   useEffect(() => {
     if (answer !== null) {
       setAnswered(true);
+
+      if (
+        question.type === PractiseType.MULTIPLE_CHOICE &&
+        answer == question.task.answer.meaning
+      ) {
+        setCorrectly((prev) => prev + 1);
+      }
     }
   }, [answer]);
 

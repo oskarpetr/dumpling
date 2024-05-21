@@ -11,9 +11,14 @@ import {
 interface Props {
   question: LessonPractiseType;
   setAnswered: Dispatch<SetStateAction<boolean>>;
+  setCorrectly: Dispatch<SetStateAction<number>>;
 }
 
-export default function Pronunciation({ question, setAnswered }: Props) {
+export default function Pronunciation({
+  question,
+  setAnswered,
+  setCorrectly,
+}: Props) {
   // tooltip state
   const [wordTooltip, setWordTooltip] = useState(false);
 
@@ -24,6 +29,13 @@ export default function Pronunciation({ question, setAnswered }: Props) {
   useEffect(() => {
     if (answer !== null) {
       setAnswered(true);
+
+      if (
+        question.type === PractiseType.PRONUNCIATION &&
+        answer == question.task.answer.pronunciation
+      ) {
+        setCorrectly((prev) => prev + 1);
+      }
     }
   }, [answer]);
 
