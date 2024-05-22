@@ -9,8 +9,10 @@ import Image from "next/image";
 import { cn } from "@/utils/cn";
 import { toast } from "sonner";
 import { Title } from "@/components/Titles";
-import { Camera } from "@phosphor-icons/react";
+import { ArrowRight, Camera, Spinner } from "@phosphor-icons/react";
 import { postAccount } from "@/utils/fetchers";
+import { ref, uploadString } from "firebase/storage";
+import { storage } from "@/utils/firebase";
 
 export default function SignIn() {
   // fields states
@@ -68,6 +70,8 @@ export default function SignIn() {
 
     setErrorPassword(undefined);
 
+    setIsLoading(true);
+
     const encrypted = await bcrypt.hashSync(password, bcrypt.genSaltSync(10));
     setEncryptedPassword(encrypted);
   };
@@ -85,6 +89,9 @@ export default function SignIn() {
         toast.error("An error has occured.");
         return;
       }
+
+      const storageRef = ref(storage, `avatars/${res.userId}`);
+      await uploadString(storageRef, avatar, "data_url");
 
       router.push("/sign-in");
 
@@ -218,18 +225,15 @@ export default function SignIn() {
 
           <button
             className="w-full py-2 mt-4 rounded-xl font-semibold bg-blue-600 flex gap-2 items-center justify-center border-blue-500 border border-b-4 active:border active:mt-[3px] transition-all"
-            // disabled={isLoading}
+            disabled={isLoading}
             type="submit"
           >
             Sign up
-            {/* {isLoading ? (
-              <Icon
-                icon="Spinner"
-                className="animate-spin text-lg text-white"
-              />
+            {isLoading ? (
+              <Spinner className="animate-spin text-lg text-white" />
             ) : (
-              <Icon icon="ArrowRight" className="text-white" />
-            )} */}
+              <ArrowRight className="text-white" />
+            )}
           </button>
         </form>
       </div>

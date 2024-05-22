@@ -11,13 +11,9 @@ interface Props {
 }
 
 export default function WordsPractised({ lessonId, xp }: Props) {
-  useEffect(() => {
-    const completeLesson = async () => {
-      await postCompleteLesson(lessonId, xp);
-    };
-
-    completeLesson();
-  }, []);
+  const completeLesson = async () => {
+    await postCompleteLesson(lessonId, xp);
+  };
 
   return (
     <div className="flex justify-center items-center">
@@ -63,9 +59,10 @@ export default function WordsPractised({ lessonId, xp }: Props) {
             animate={{ x: 0, opacity: 1 }}
             initial={{ x: -10, opacity: 0 }}
             transition={{ duration: 0.5, delay: 1 }}
+            onClick={completeLesson}
             className="w-full rounded-xl py-3.5 flex justify-center items-center gap-2 border border-b-4 font-semibold transition-all active:mt-[3px] bg-neutral-800 border-neutral-700 active:border"
           >
-            Lessons
+            Finish lesson
             <CardsThree weight="bold" size={20} className="text-neutral-400" />
           </motion.button>
         </Link>

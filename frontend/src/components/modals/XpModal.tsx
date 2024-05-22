@@ -4,6 +4,8 @@ import { Subtitle } from "../Titles";
 import { XpMeType, XpType } from "@/utils/xp.types";
 import { fetchXpList } from "@/utils/fetchers";
 import { ArrowDown } from "@phosphor-icons/react";
+import { getAvatar } from "@/utils/avatar";
+import { useSession } from "next-auth/react";
 
 interface Props {
   open: boolean;
@@ -14,11 +16,14 @@ interface Props {
 export default function XpModal({ open, setOpen, xpMe }: Props) {
   const [xps, setXps] = useState<XpType[]>([]);
 
+  const { data: session } = useSession();
+
   useEffect(() => {
     fetchXpList().then((xps) => setXps(xps));
   }, []);
 
-  const userId = "b332aee7-c1b5-4454-b489-21f342ff611d";
+  // user id
+  const userId = session?.user?.id ?? "2bf03201-9c3c-404e-b479-712176dbd22a";
 
   return (
     <div
@@ -46,7 +51,14 @@ export default function XpModal({ open, setOpen, xpMe }: Props) {
               <div className="text-neutral-500 font-bold w-4">#{index + 1}</div>
 
               <div className="flex gap-2 items-center">
-                <div className="w-6 h-6 rounded-full bg-neutral-400"></div>
+                <img
+                  src={getAvatar(xp.userId)}
+                  alt="Avatar"
+                  className="h-6 w-6 rounded-full border border-white border-opacity-10"
+                  width={24}
+                  height={24}
+                  style={{ objectFit: "cover" }}
+                />
                 <div className="font-bold text-sm">{xp.user.username}</div>
               </div>
             </div>

@@ -7,6 +7,7 @@ import WordTooltip from "../modals/WordTooltip";
 import Options from "./Options";
 import { cn } from "@/utils/cn";
 import { ArrowRight, Barbell } from "@phosphor-icons/react";
+import DumplingMessage from "./DumplingMessage";
 
 interface Props {
   question: LessonLearningType;
@@ -29,39 +30,7 @@ export default function LearningMode({ question, continueLesson }: Props) {
         </div>
         <Subtitle title="Learn this word" />
 
-        <motion.div
-          animate={{ y: 0, opacity: 1 }}
-          initial={{ y: 10, opacity: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="flex items-end gap-4 mt-4"
-        >
-          <Image
-            src="/images/dumpling.png"
-            alt="Dumpling"
-            width={50}
-            height={50}
-          />
-          <div className="flex items-center px-10 pb-3 pt-3 font-semibold rounded-e-full rounded-tl-full border border-neutral-700 bg-neutral-800 w-fit">
-            <div
-              className="flex flex-col items-center cursor-pointer"
-              onMouseEnter={() => setWordTooltip(true)}
-              onMouseLeave={() => setWordTooltip(false)}
-            >
-              <div className="text-[13px] text-neutral-400 leading-[10px]">
-                {question.answer.pronunciation}
-              </div>
-              <div className="zh text-2xl border-b-2 border-dotted border-neutral-400">
-                {question.answer.value}
-              </div>
-
-              <WordTooltip
-                open={wordTooltip}
-                setOpen={setWordTooltip}
-                word={question.answer}
-              />
-            </div>
-          </div>
-        </motion.div>
+        <DumplingMessage word={question.answer} />
 
         <motion.div
           animate={{ y: 0, opacity: 1 }}

@@ -34,7 +34,7 @@ public class XpController : Controller
     public IActionResult Me()
     {
         // var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
-        var authorizationToken = "b332aee7-c1b5-4454-b489-21f342ff611d";
+        var authorizationToken = "2bf03201-9c3c-404e-b479-712176dbd22a";
 
         var xp = _database.Xps.FirstOrDefault(x => x.UserId == authorizationToken);
         var rank = _database.Xps.OrderByDescending(x => x.Value).ToList().IndexOf(xp) + 1;

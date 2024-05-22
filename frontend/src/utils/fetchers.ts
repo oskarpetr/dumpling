@@ -80,3 +80,21 @@ export async function postCompleteLesson(lessonId: string, xp: number) {
   });
   return response.data;
 }
+
+// saved words
+export async function fetchSavedWords() {
+  const response = await axios.get(API_URL + "saved-words");
+  return response.data;
+}
+
+// save word
+export async function postSaveWord(wordId: string) {
+  const response = await axios.post(API_URL + "save-word", { id: wordId });
+  return response.data;
+}
+
+// is word saved
+export async function postIsWordSaved(wordId: string) {
+  const response = await axios.post(API_URL + "is-word-saved", { id: wordId });
+  return response.data;
+}

@@ -38,10 +38,19 @@ public class AccountController : Controller
                 Username = model.username,
                 Password = model.password
             });
-
+            
             _database.SaveChanges();
             
-            return Ok();
+            var user = _database.Users.FirstOrDefault(x => x.Username == model.username);
+            _database.Xps.Add(new Xp()
+            {
+                UserId = user.UserId,
+                Value = 0
+            });
+            
+            _database.SaveChanges();
+            
+            return Json(user);
         }
         catch (Exception e)
         {

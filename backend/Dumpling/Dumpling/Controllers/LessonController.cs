@@ -31,7 +31,7 @@ public class LessonController : Controller
     public IActionResult Lessons()
     {
         // var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
-        var authorizationToken = "b332aee7-c1b5-4454-b489-21f342ff611d";
+        var authorizationToken = "2bf03201-9c3c-404e-b479-712176dbd22a";
         
         var userLessons = _database.UserLessons.Where(x => x.UserId == authorizationToken).ToList();
         List<Lesson> lessons = new();
@@ -193,10 +193,19 @@ public class LessonController : Controller
     public IActionResult Lesson(string lessonId, [FromBody] CompleteModel model)
     {
         // var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
-        var authorizationToken = "b332aee7-c1b5-4454-b489-21f342ff611d";
+        var authorizationToken = "2bf03201-9c3c-404e-b479-712176dbd22a";
         
-        var userLesson = _database.UserLessons.FirstOrDefault(x => x.UserId == authorizationToken && x.LessonId == lessonId);
-        if(userLesson == null)
+        var lessonAlreadyDone = _database.UserLessons.ToList().Exists(x => x.UserId == authorizationToken && x.LessonId == lessonId);
+        if(lessonAlreadyDone)
+        {
+            var userLesson = _database.UserLessons.FirstOrDefault(x => x.UserId == authorizationToken && x.LessonId == lessonId);
+            
+            userLesson.Practised++;
+            userLesson.BestScore = Math.Max(userLesson.BestScore, (int)Math.Floor(((float)model.xp / 200) * 5));
+
+            _database.SaveChanges();
+        }
+        else
         {
             _database.UserLessons.Add(new UserLesson()
             {
@@ -205,11 +214,6 @@ public class LessonController : Controller
                 Practised = 1,
                 BestScore = (int)Math.Floor(((float)model.xp / 200) * 5)
             });
-        }
-        else
-        {
-            userLesson.Practised++;
-            userLesson.BestScore = Math.Max(userLesson.BestScore, (int)Math.Floor(((float)model.xp / 200) * 5));
         }
 
         var xp = _database.Xps.FirstOrDefault(x => x.UserId == authorizationToken);
