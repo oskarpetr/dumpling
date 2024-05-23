@@ -24,8 +24,7 @@ public class WordController : Controller
     [HttpGet(Api.WordScheme.SAVEDWORDS)]
     public IActionResult SavedWords()
     {
-        // var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
-        var authorizationToken = "2bf03201-9c3c-404e-b479-712176dbd22a";
+        var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
         
         var words = _database.SavedWords.Where(x => x.UserId == authorizationToken).Select(x => x.Word).ToList();
         return Json(words);
@@ -39,8 +38,7 @@ public class WordController : Controller
     [HttpPost(Api.WordScheme.SAVEWORD)]
     public IActionResult SaveWord([FromBody] WordModel model)
     {
-        // var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
-        var authorizationToken = "2bf03201-9c3c-404e-b479-712176dbd22a";
+        var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
         
         var word = _database.SavedWords.FirstOrDefault(x => x.WordId == model.id);
         if (word == null)
@@ -64,7 +62,9 @@ public class WordController : Controller
     [HttpPost(Api.WordScheme.ISWORDSAVED)]
     public IActionResult IsWordSaved([FromBody] WordModel model)
     {
-        var isSaved = _database.SavedWords.ToList().Exists(x => x.WordId == model.id);
+        var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
+        
+        var isSaved = _database.SavedWords.ToList().Exists(x => x.UserId == authorizationToken && x.WordId == model.id);
         return Json(isSaved);
     }
 }

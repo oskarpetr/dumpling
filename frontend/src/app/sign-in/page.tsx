@@ -1,12 +1,14 @@
 "use client";
 
 import { Title } from "@/components/Titles";
+import { postSignIn } from "@/utils/fetchers";
 import { ArrowRight, Spinner } from "@phosphor-icons/react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
+import bcrypt from "bcryptjs-react";
 
 export default function SignIn() {
   // router
@@ -48,6 +50,7 @@ export default function SignIn() {
       callbackUrl: "/",
       redirect: false,
     });
+
     console.log(signInRes);
     if (signInRes?.ok) {
       router.push(signInRes.url!);

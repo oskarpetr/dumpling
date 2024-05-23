@@ -7,36 +7,45 @@ import LessonSkeleton from "@/components/skeletons/LessonSkeleton";
 import { fetchLessons } from "@/utils/fetchers";
 import { LessonType } from "@/utils/lesson.types";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
-  // const lessonsQuery = useQuery({
-  //   queryKey: ["lessons"],
-  //   queryFn: fetchLessons,
-  // });
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
-    fetchLessons().then((data) => {
-      setLessons(data);
-      setLoading(false);
-      console.log(data);
-    });
+    if (status === "unauthenticated") {
+      router.push("/sign-in");
+    }
+  }, [session]);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetchLessons().then((data) => {
+        setLessons(data);
+        setLoading(false);
+      });
+    }
   }, []);
 
   const [lessons, setLessons] = useState<LessonType[]>([]);
   const [loading, setLoading] = useState(true);
 
   return (
-    <Layout>
-      <Title title="Lessons" />
+    status === "authenticated" && (
+      <Layout>
+        <Title title="Lessons" />
 
-      <div className="flex flex-row gap-8 flex-wrap">
-        {lessons.map((lesson, index) => (
-          <Lesson key={lesson.lessonId} lesson={lesson} index={index} />
-        ))}
+        <div className="flex flex-row gap-8 flex-wrap">
+          {lessons.map((lesson, index) => (
+            <Lesson key={lesson.lessonId} lesson={lesson} index={index} />
+          ))}
 
-        {loading &&
-          [...Array(3)].map((_, index) => <LessonSkeleton key={index} />)}
-      </div>
-    </Layout>
+          {loading &&
+            [...Array(3)].map((_, index) => <LessonSkeleton key={index} />)}
+        </div>
+      </Layout>
+    )
   );
 }

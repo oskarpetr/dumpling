@@ -23,7 +23,7 @@ export default function DumplingMessage({ word, pronunciation = true }: Props) {
     };
 
     postIsSaved();
-  }, []);
+  }, [word.wordId]);
 
   const saveWord = async (wordId: string) => {
     await postSaveWord(wordId);
@@ -63,7 +63,7 @@ export default function DumplingMessage({ word, pronunciation = true }: Props) {
         <button onClick={() => saveWord(word.wordId!)}>
           <Star
             className={cn(
-              "h-6 w-6 text-yellow-500",
+              "h-6 w-6 text-yellow-500 transition-all",
               wordSaved ? "opcaity-100" : "opacity-50"
             )}
             weight={wordSaved ? "fill" : "regular"}

@@ -15,14 +15,6 @@ public class XpController : Controller
         _database = database;
     }
     
-    [EnableCors("AllowSpecificOrigin")]
-    [HttpGet(Api.XpScheme.XPS)]
-    public IActionResult Xps()
-    {
-        var xps = _database.Xps.ToList();
-        return Json(xps);
-    }
-    
     public class XpModel
     {
         public int Value { get; set; }
@@ -33,8 +25,7 @@ public class XpController : Controller
     [HttpGet(Api.XpScheme.ME)]
     public IActionResult Me()
     {
-        // var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
-        var authorizationToken = "2bf03201-9c3c-404e-b479-712176dbd22a";
+        var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
 
         var xp = _database.Xps.FirstOrDefault(x => x.UserId == authorizationToken);
         var rank = _database.Xps.OrderByDescending(x => x.Value).ToList().IndexOf(xp) + 1;

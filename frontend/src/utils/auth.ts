@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs-react";
 import { NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import axios from "axios";
-import { signIn } from "./fetchers";
+import { postSignIn } from "./fetchers";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -19,26 +19,11 @@ export const authOptions: NextAuthOptions = {
           if (!credentials || !credentials?.email || !credentials.password)
             return null;
 
-          // const devUrl = "http://localhost:3030/api/sign-in";
-          // const prodUrl = "https://dumpling.oskarpetr.dev/api/sign-in";
-
-          // const req = await fetch(
-          //   process.env.NODE_ENV === "development" ? devUrl : prodUrl,
-          //   {
-          //     method: "POST",
-          //     headers: {
-          //       "Content-Type": "application/json",
-          //     },
-          //     body: JSON.stringify({ username: credentials.email }),
-          //   }
-          // );
-
-          const req = await signIn(credentials.email);
-          const res = await req.json();
+          const res = await postSignIn(credentials.email);
           const user = res.data;
 
-          if (req.status !== 200 || !user) return null;
-          console.log(user);
+          if (res.status !== 200 || !user) return null;
+
           const passwordMatch = bcrypt.compareSync(
             credentials.password,
             user.password

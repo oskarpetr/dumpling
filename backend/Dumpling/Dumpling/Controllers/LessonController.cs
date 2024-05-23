@@ -30,8 +30,7 @@ public class LessonController : Controller
     [HttpGet(Api.LessonScheme.LESSONS)]
     public IActionResult Lessons()
     {
-        // var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
-        var authorizationToken = "2bf03201-9c3c-404e-b479-712176dbd22a";
+        var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
         
         var userLessons = _database.UserLessons.Where(x => x.UserId == authorizationToken).ToList();
         List<Lesson> lessons = new();
@@ -192,8 +191,7 @@ public class LessonController : Controller
     [HttpPost(Api.LessonScheme.COMPLETE)]
     public IActionResult Lesson(string lessonId, [FromBody] CompleteModel model)
     {
-        // var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
-        var authorizationToken = "2bf03201-9c3c-404e-b479-712176dbd22a";
+        var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
         
         var lessonAlreadyDone = _database.UserLessons.ToList().Exists(x => x.UserId == authorizationToken && x.LessonId == lessonId);
         if(lessonAlreadyDone)
