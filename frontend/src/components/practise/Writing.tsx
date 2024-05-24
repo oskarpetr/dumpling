@@ -30,9 +30,14 @@ export default function Writing({
   const [evaluate, setEvaluate] = useState(false);
 
   const evaluateAnswer = () => {
+    let modifiedAnswer = answer?.toLowerCase().trim();
+
+    const parenthesesRegex = /\(.+?\)/g;
+    modifiedAnswer = modifiedAnswer?.replace(parenthesesRegex, "");
+
     if (
       question.type === PractiseType.WRITING &&
-      answer !== question.task.answer.meaning
+      modifiedAnswer !== question.task.answer.meaning
     ) {
       setWrong(true);
     } else {

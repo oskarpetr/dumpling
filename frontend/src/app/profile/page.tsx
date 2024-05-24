@@ -28,7 +28,7 @@ export default function ProfilePage() {
       fetchXpMe().then((xp) => setXpMe(xp));
       fetchSavedWords().then((words) => setSavedWords(words));
     }
-  }, []);
+  }, [status]);
 
   const removeWord = async (wordId: string) => {
     if (savedWords) {

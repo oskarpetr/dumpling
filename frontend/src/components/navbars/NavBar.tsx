@@ -31,7 +31,7 @@ export default function NavBar() {
 
   return (
     <div className="flex justify-between items-center bg-neutral-800 border-b border-neutral-700 px-20 py-4">
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-6 items-center">
         <Link
           href="/profile"
           className="flex items-center gap-2 cursor-pointer hover:bg-neutral-700 transition-all rounded-xl px-4 py-2"
@@ -60,7 +60,7 @@ export default function NavBar() {
         </button>
       </div>
 
-      <div className="flex gap-12">
+      <div className="flex gap-6">
         <Link
           href={"/"}
           className="flex items-center gap-2 hover:bg-neutral-700 transition-all rounded-xl px-4 py-2"

@@ -56,7 +56,7 @@ export default function LessonPage() {
     if (status === "authenticated") {
       fetchLessonContent();
     }
-  }, []);
+  }, [status]);
 
   // continue lesson
   const continueLesson = () => {

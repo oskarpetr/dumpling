@@ -67,4 +67,18 @@ public class WordController : Controller
         var isSaved = _database.SavedWords.ToList().Exists(x => x.UserId == authorizationToken && x.WordId == model.id);
         return Json(isSaved);
     }
+
+    [HttpGet("/api/upload-words")]
+    public IActionResult UploadWords()
+    {
+        _database.Words.Add(new Word()
+        {
+            LessonId = "",
+            Value = "",
+            Meaning = "",
+            Pronunciation = 
+        });
+
+        return Json(_database.Words.ToList());
+    }
 }

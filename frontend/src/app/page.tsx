@@ -14,6 +14,15 @@ export default function HomePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
+  const fetchLessonsEffect = async () => {
+    if (status === "authenticated") {
+      fetchLessons().then((data) => {
+        setLessons(data!);
+        setLoading(false);
+      });
+    }
+  };
+
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/sign-in");
@@ -21,12 +30,11 @@ export default function HomePage() {
   }, [session]);
 
   useEffect(() => {
-    if (status === "authenticated") {
-      fetchLessons().then((data) => {
-        setLessons(data);
-        setLoading(false);
-      });
-    }
+    fetchLessonsEffect();
+  }, [status]);
+
+  useEffect(() => {
+    fetchLessonsEffect();
   }, []);
 
   const [lessons, setLessons] = useState<LessonType[]>([]);
