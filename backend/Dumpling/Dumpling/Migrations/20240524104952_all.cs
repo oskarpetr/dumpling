@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dumpling.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class all : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -52,28 +52,28 @@ namespace Dumpling.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Units",
+                columns: table => new
+                {
+                    UnitId = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Units", x => x.UnitId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    Username = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.UserId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Words",
-                columns: table => new
-                {
-                    WordId = table.Column<string>(type: "text", nullable: false),
-                    Value = table.Column<string>(type: "text", nullable: false),
-                    Meaning = table.Column<string>(type: "text", nullable: false),
-                    Pronunciation = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Words", x => x.WordId);
                 });
 
             migrationBuilder.CreateTable(
@@ -183,24 +183,111 @@ namespace Dumpling.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserWords",
+                name: "Lessons",
                 columns: table => new
                 {
-                    UserWordId = table.Column<string>(type: "text", nullable: false),
+                    LessonId = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Translation = table.Column<string>(type: "text", nullable: false),
+                    UnitId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lessons", x => x.LessonId);
+                    table.ForeignKey(
+                        name: "FK_Lessons_Units_UnitId",
+                        column: x => x.UnitId,
+                        principalTable: "Units",
+                        principalColumn: "UnitId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Xps",
+                columns: table => new
+                {
+                    XpId = table.Column<string>(type: "text", nullable: false),
+                    Value = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Xps", x => x.XpId);
+                    table.ForeignKey(
+                        name: "FK_Xps_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserLessons",
+                columns: table => new
+                {
+                    UserLessonId = table.Column<string>(type: "text", nullable: false),
+                    LessonId = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    Practised = table.Column<int>(type: "integer", nullable: false),
+                    BestScore = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLessons", x => x.UserLessonId);
+                    table.ForeignKey(
+                        name: "FK_UserLessons_Lessons_LessonId",
+                        column: x => x.LessonId,
+                        principalTable: "Lessons",
+                        principalColumn: "LessonId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserLessons_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Words",
+                columns: table => new
+                {
+                    WordId = table.Column<string>(type: "text", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: false),
+                    Meaning = table.Column<string>(type: "text", nullable: false),
+                    Pronunciation = table.Column<string>(type: "text", nullable: false),
+                    LessonId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Words", x => x.WordId);
+                    table.ForeignKey(
+                        name: "FK_Words_Lessons_LessonId",
+                        column: x => x.LessonId,
+                        principalTable: "Lessons",
+                        principalColumn: "LessonId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SavedWords",
+                columns: table => new
+                {
+                    SavedWordId = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false),
                     WordId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserWords", x => x.UserWordId);
+                    table.PrimaryKey("PK_SavedWords", x => x.SavedWordId);
                     table.ForeignKey(
-                        name: "FK_UserWords_Users_UserId",
+                        name: "FK_SavedWords_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserWords_Words_WordId",
+                        name: "FK_SavedWords_Words_WordId",
                         column: x => x.WordId,
                         principalTable: "Words",
                         principalColumn: "WordId",
@@ -245,14 +332,39 @@ namespace Dumpling.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserWords_UserId",
-                table: "UserWords",
+                name: "IX_Lessons_UnitId",
+                table: "Lessons",
+                column: "UnitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SavedWords_UserId",
+                table: "SavedWords",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserWords_WordId",
-                table: "UserWords",
+                name: "IX_SavedWords_WordId",
+                table: "SavedWords",
                 column: "WordId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLessons_LessonId",
+                table: "UserLessons",
+                column: "LessonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLessons_UserId",
+                table: "UserLessons",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Words_LessonId",
+                table: "Words",
+                column: "LessonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Xps_UserId",
+                table: "Xps",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -274,7 +386,13 @@ namespace Dumpling.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "UserWords");
+                name: "SavedWords");
+
+            migrationBuilder.DropTable(
+                name: "UserLessons");
+
+            migrationBuilder.DropTable(
+                name: "Xps");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -283,10 +401,16 @@ namespace Dumpling.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "Words");
+
+            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Words");
+                name: "Lessons");
+
+            migrationBuilder.DropTable(
+                name: "Units");
         }
     }
 }

@@ -35,7 +35,13 @@ namespace Dumpling.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("UnitId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("LessonId");
+
+                    b.HasIndex("UnitId");
 
                     b.ToTable("Lessons");
                 });
@@ -60,6 +66,20 @@ namespace Dumpling.Migrations
                     b.HasIndex("WordId");
 
                     b.ToTable("SavedWords");
+                });
+
+            modelBuilder.Entity("Dumpling.Data.Unit", b =>
+                {
+                    b.Property<string>("UnitId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("UnitId");
+
+                    b.ToTable("Units");
                 });
 
             modelBuilder.Entity("Dumpling.Data.User", b =>
@@ -353,6 +373,17 @@ namespace Dumpling.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Dumpling.Data.Lesson", b =>
+                {
+                    b.HasOne("Dumpling.Data.Unit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Unit");
                 });
 
             modelBuilder.Entity("Dumpling.Data.SavedWord", b =>

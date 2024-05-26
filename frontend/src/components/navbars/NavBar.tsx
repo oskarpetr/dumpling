@@ -9,9 +9,10 @@ import XpModal from "../modals/XpModal";
 import Link from "next/link";
 import { getAvatar } from "@/utils/avatar";
 import { signOut, useSession } from "next-auth/react";
+import { UnitType } from "@/utils/unit.types";
 
 export default function NavBar() {
-  const [lessons, setLessons] = useState<LessonType[]>([]);
+  const [units, setUnits] = useState<UnitType[]>([]);
   const [xpMe, setXpMe] = useState<XpMeType>();
 
   const [xpModal, setXpModal] = useState(false);
@@ -20,11 +21,16 @@ export default function NavBar() {
   const { data: session } = useSession();
 
   useEffect(() => {
-    fetchLessons().then((lessons) => setLessons(lessons));
+    fetchLessons().then((lessons) => setUnits(lessons));
     fetchXpMe().then((xp) => setXpMe(xp));
   }, []);
 
-  const completed = lessons.filter((lesson) => lesson.practised >= 1).length;
+  let completed = 0;
+  units.map((unit, index) =>
+    unit.lessons.map((lesson: LessonType) => {
+      if (lesson.practised >= 1) completed += 1;
+    })
+  );
 
   // user id
   const userId = session?.user?.id ?? "2bf03201-9c3c-404e-b479-712176dbd22a";

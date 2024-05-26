@@ -35,7 +35,7 @@ export default function LessonPage() {
   );
 
   // learning done
-  const [learningDone, setLearningDone] = useState(false);
+  const [learningDone, setLearningDone] = useState(true);
 
   // lesson progress percentage
   const progressPercentage = !learningDone

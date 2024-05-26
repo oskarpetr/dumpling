@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dumpling.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240416130833_seventh")]
-    partial class seventh
+    [Migration("20240524104952_all")]
+    partial class all
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,9 +38,51 @@ namespace Dumpling.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("UnitId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("LessonId");
 
+                    b.HasIndex("UnitId");
+
                     b.ToTable("Lessons");
+                });
+
+            modelBuilder.Entity("Dumpling.Data.SavedWord", b =>
+                {
+                    b.Property<string>("SavedWordId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("WordId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("SavedWordId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("WordId");
+
+                    b.ToTable("SavedWords");
+                });
+
+            modelBuilder.Entity("Dumpling.Data.Unit", b =>
+                {
+                    b.Property<string>("UnitId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("UnitId");
+
+                    b.ToTable("Units");
                 });
 
             modelBuilder.Entity("Dumpling.Data.User", b =>
@@ -66,12 +108,15 @@ namespace Dumpling.Migrations
                     b.Property<string>("UserLessonId")
                         .HasColumnType("text");
 
-                    b.Property<bool>("Completed")
-                        .HasColumnType("boolean");
+                    b.Property<int>("BestScore")
+                        .HasColumnType("integer");
 
                     b.Property<string>("LessonId")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("Practised")
+                        .HasColumnType("integer");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -112,6 +157,25 @@ namespace Dumpling.Migrations
                     b.HasIndex("LessonId");
 
                     b.ToTable("Words");
+                });
+
+            modelBuilder.Entity("Dumpling.Data.Xp", b =>
+                {
+                    b.Property<string>("XpId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("integer");
+
+                    b.HasKey("XpId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Xps");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -314,6 +378,36 @@ namespace Dumpling.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Dumpling.Data.Lesson", b =>
+                {
+                    b.HasOne("Dumpling.Data.Unit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Unit");
+                });
+
+            modelBuilder.Entity("Dumpling.Data.SavedWord", b =>
+                {
+                    b.HasOne("Dumpling.Data.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Dumpling.Data.Word", "Word")
+                        .WithMany()
+                        .HasForeignKey("WordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("Word");
+                });
+
             modelBuilder.Entity("Dumpling.Data.UserLesson", b =>
                 {
                     b.HasOne("Dumpling.Data.Lesson", "Lesson")
@@ -342,6 +436,17 @@ namespace Dumpling.Migrations
                         .IsRequired();
 
                     b.Navigation("Lesson");
+                });
+
+            modelBuilder.Entity("Dumpling.Data.Xp", b =>
+                {
+                    b.HasOne("Dumpling.Data.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

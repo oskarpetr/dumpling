@@ -16,6 +16,12 @@ public class LessonController : Controller
         _database = database;
     }
 
+    private class UnitModel
+    {
+        public string Name { get; set; }
+        public List<LessonModel> Lessons { get; set; }
+    }
+    
     private class LessonModel
     {
         public string LessonId { get; set; }
@@ -32,50 +38,53 @@ public class LessonController : Controller
     {
         var authorizationToken = HttpContext.Request.Headers["Authorization"].ToString();
         
-        var userLessons = _database.UserLessons.Where(x => x.UserId == authorizationToken).ToList();
-        List<Lesson> lessons = new();
-        
-        foreach (var userLesson in userLessons)
-        {
-            var lesson = _database.Lessons.FirstOrDefault(x => x.LessonId == userLesson.LessonId);
-            lessons.Add(lesson);
-        }
-        
-        List<LessonModel> lessonModels = new();
+        var units = _database.Units.ToList();
+        var unitsModels = new List<UnitModel>();
 
-        foreach (var lesson in lessons)
+        foreach (var unit in units)
         {
-            var words = _database.Words.Where(x => x.LessonId == lesson.LessonId).ToList();
+            var unitLessons = _database.Lessons.Where(x => x.UnitId == unit.UnitId).ToList();
+            var completedLessons = _database.UserLessons.Where(x => x.UserId == authorizationToken && x.Lesson.UnitId == unit.UnitId).ToList();
+            var lessonModels = new List<LessonModel>();
             
-            lessonModels.Add(new LessonModel()
+            foreach (var unitLesson in unitLessons)
             {
-                LessonId = lesson.LessonId,
-                Name = lesson.Name,
-                Translation = lesson.Translation,
-                Words = words,
-                Practised = userLessons.ElementAt(lessons.IndexOf(lesson)).Practised,
-                BestScore = userLessons.ElementAt(lessons.IndexOf(lesson)).BestScore
+                var lesson = completedLessons.FirstOrDefault(x => x.LessonId == unitLesson.LessonId);
+
+                if (lesson != null)
+                {
+                    lessonModels.Add(new LessonModel()
+                    {
+                        LessonId = unitLesson.LessonId,
+                        Name = unitLesson.Name,
+                        Translation = unitLesson.Translation,
+                        Words = _database.Words.Where(x => x.LessonId == unitLesson.LessonId).ToList(),
+                        Practised = lesson.Practised,
+                        BestScore = lesson.BestScore
+                    });
+                }
+                else
+                {
+                    lessonModels.Add(new LessonModel()
+                    {
+                        LessonId = unitLesson.LessonId,
+                        Name = unitLesson.Name,
+                        Translation = unitLesson.Translation,
+                        Words = _database.Words.Where(x => x.LessonId == unitLesson.LessonId).ToList(),
+                        Practised = 0,
+                        BestScore = 0
+                    });
+                }
+            }
+
+            unitsModels.Add(new UnitModel()
+            {
+                Name = unit.Name,
+                Lessons = lessonModels
             });
         }
-
-        var standardLessons = _database.Lessons.ToList();
-        foreach (var lesson in standardLessons)
-        {
-            if (lessons.FirstOrDefault(x => x.LessonId == lesson.LessonId) == null)
-            {
-                lessonModels.Add(new LessonModel()
-                {
-                    LessonId = lesson.LessonId,
-                    Name = lesson.Name,
-                    Translation = lesson.Translation,
-                    Words = _database.Words.Where(x => x.LessonId == lesson.LessonId).ToList(),
-                    Practised = 0,
-                    BestScore = 0
-                });
-            }
-        }
         
-        return Json(lessonModels);
+        return Json(unitsModels);
     }
     
     private class LessonContentModel

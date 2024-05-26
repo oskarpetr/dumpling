@@ -11,6 +11,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<UserLesson> UserLessons { get; set; }
     public DbSet<Xp> Xps { get; set; }
     public DbSet<SavedWord> SavedWords { get; set; }
+    public DbSet<Unit> Units { get; set; }
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)

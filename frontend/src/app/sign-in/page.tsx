@@ -74,7 +74,7 @@ export default function SignIn() {
 
         <form className="flex flex-col gap-8" onSubmit={logIn}>
           <div className="flex flex-col gap-2">
-            <p className="font-semibold">Email</p>
+            <p className="font-semibold">Username</p>
             <input
               className="w-full border border-neutral-600 bg-neutral-700 rounded-xl focus:outline-none text-white px-6 py-2"
               placeholder="Enter username"

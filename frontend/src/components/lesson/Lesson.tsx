@@ -84,24 +84,18 @@ export default function Lesson({ lesson, index }: Props) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4">
-          {/* <button className="text-neutral-400 font-bold text-sm">
-            Show vocabulary
-          </button> */}
-
-          <Link
-            href={`/lessons/${lesson.lessonId}`}
-            className="w-full py-2 rounded-xl bg-blue-600 flex gap-2 items-center justify-center border-blue-500 border border-b-4 active:border active:mt-[3px] transition-all"
-            onClick={() => setLoadingPage(true)}
-          >
-            <span className="font-bold">Start lesson</span>
-            {loadingPage ? (
-              <Spinner size={20} className="animate-spin" />
-            ) : (
-              <Play weight="fill" size={14} />
-            )}
-          </Link>
-        </div>
+        <Link
+          href={`/lessons/${lesson.lessonId}`}
+          className="w-full py-2 rounded-xl bg-blue-600 flex gap-2 items-center justify-center border-blue-500 border border-b-4 active:border active:mt-[3px] transition-all"
+          onClick={() => setLoadingPage(true)}
+        >
+          <span className="font-bold">Start lesson</span>
+          {loadingPage ? (
+            <Spinner size={20} className="animate-spin" />
+          ) : (
+            <Play weight="fill" size={14} />
+          )}
+        </Link>
 
         {/* <table className="w-full">
           <thead>

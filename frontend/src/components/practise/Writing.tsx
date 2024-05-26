@@ -37,7 +37,7 @@ export default function Writing({
 
     if (
       question.type === PractiseType.WRITING &&
-      modifiedAnswer !== question.task.answer.meaning
+      modifiedAnswer !== question.task.answer.meaning.toLowerCase()
     ) {
       setWrong(true);
     } else {
