@@ -14,13 +14,6 @@ public class WordController : Controller
         _database = database;
     }
     
-    [HttpGet(Api.WordScheme.WORDS)]
-    public IActionResult Words()
-    {
-        var words = _database.Words.ToList();
-        return Json(words);
-    }
-    
     [HttpGet(Api.WordScheme.SAVEDWORDS)]
     public IActionResult SavedWords()
     {
