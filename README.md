@@ -20,6 +20,10 @@ Dumpling is an intuitive language learning app designed to better your vocabular
 - Saving words to profile
 - 11 API endpoints
 
+## Database design
+
+<img width="1110" alt="database diagram" src="https://github.com/user-attachments/assets/9aa35854-4867-427c-93a7-aff3d1040ea1">
+
 ## API
 
 | Method | Endpoint                   | Action description              |
